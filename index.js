@@ -59,12 +59,12 @@ const pushToAppWrite = async () => {
         );
         console.log("✅ Created:", doc.$id);
       } catch (error) {
-        console.log("❌ Error creating document", error.message);
+        console.log("Error creating document", error.message);
       }
       await sleep(200);
     }
   } catch (error) {
-    console.error("❌ Error in pushToAppWrite", error.message);
+    console.error("Error in pushToAppWrite", error.message);
   }
 };
 pushToAppWrite();
