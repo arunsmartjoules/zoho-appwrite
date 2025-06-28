@@ -68,11 +68,23 @@ const pushToAppWrite = async () => {
   }
 };
 
-export default async (req, res) => {
+export default async function (req) {
   try {
     await pushToAppWrite();
-    res.json({ execution: "success" });
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ execution: "success" }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
   } catch (error) {
-    res.json({ execution: "failed" });
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ execution: "failed", error: error.message }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
   }
-};
+}
