@@ -2,9 +2,9 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
-import { getRecords } from "./api/zoho.js";
+import { getRecords } from "../src/api/zoho.js";
 import dayjs from "dayjs";
-import { databases } from "./api/appwriteClient.js";
+import { databases } from "../src/api/appwriteClient.js";
 
 const app = express();
 dotenv.config();
@@ -67,16 +67,12 @@ const pushToAppWrite = async () => {
     console.error("Error in pushToAppWrite", error.message);
   }
 };
-pushToAppWrite();
 
-const PORT = process.env.PORT || 4004;
-
-app.get("/", async (req, res) => {
-  return res
-    .status(200)
-    .json({ message: "Smart Joules Zoho and Appwrite function" });
-});
-
-app.listen(PORT, () => {
-  console.log(`Server is listening on ${PORT}`);
-});
+export default async (req, res) => {
+  try {
+    await pushToAppWrite();
+    res.json({ execution: "success" });
+  } catch (error) {
+    res.json({ execution: "failed" });
+  }
+};
