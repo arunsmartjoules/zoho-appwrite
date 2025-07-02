@@ -35,7 +35,6 @@ const pushToAppWrite = async () => {
       console.log("Zoho API Error", response);
       return;
     }
-
     for (const record of response.data) {
       const payload = {
         task: record.Task_Name,
@@ -44,11 +43,14 @@ const pushToAppWrite = async () => {
         site_id: parseInt(record.Site),
         flag: record.Flags_For_Review == true ? true : false,
         image_mandatory: record.Image_Mandatory == true ? true : false,
-        maintenance_scheduler_id: parseInt(record.Maintenance_Scheduler_ID?.ID),
-        maintenance_master_id: parseInt(record.Maintenance_Master),
+        maintenance_scheduler_id: record.Maintenance_Scheduler_ID?.ID,
+        maintenance_master_id: record.Maintenance_Master,
+        title: record["Maintenance_Scheduler_ID.Title"],
+        progress: record["Maintenance_Scheduler_ID.Progress"],
         schedule_date: record.Schedule_Date,
         area: record.Area,
         status: record.Status,
+        response: record.Response_Value,
       };
       try {
         const doc = await databases.createDocument(
@@ -61,7 +63,6 @@ const pushToAppWrite = async () => {
       } catch (error) {
         console.log("Error creating document", error.message);
       }
-      await sleep(200);
     }
   } catch (error) {
     console.error("Error in pushToAppWrite", error.message);
