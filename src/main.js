@@ -40,7 +40,7 @@ const pushToAppWrite = async () => {
         task: record.Task_Name,
         field_type: record.Field_Type.zc_display_value,
         remarks: record.Remarks,
-        site_id: parseInt(record.Site),
+        site_id: record.Site,
         flag: record.Flags_For_Review == true ? true : false,
         image_mandatory: record.Image_Mandatory == true ? true : false,
         maintenance_scheduler_id: record.Maintenance_Scheduler_ID?.ID,
